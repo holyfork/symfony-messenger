@@ -1,0 +1,9 @@
+{
+  "require": {
+    "rector/rector": "^0.13.7"
+  },
+  "scripts": {
+    "dry": "rector process --dry-run",
+    "rector": "rector process"
+  }
+}
