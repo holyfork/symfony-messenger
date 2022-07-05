@@ -242,9 +242,9 @@ EOF
     {
         $memoryLimit = strtolower($memoryLimit);
         $max = ltrim($memoryLimit, '+');
-        if (str_starts_with($max, '0x')) {
+        if (strncmp($max, '0x', strlen('0x')) === 0) {
             $max = \intval($max, 16);
-        } elseif (str_starts_with($max, '0')) {
+        } elseif (strncmp($max, '0', strlen('0')) === 0) {
             $max = \intval($max, 8);
         } else {
             $max = (int) $max;

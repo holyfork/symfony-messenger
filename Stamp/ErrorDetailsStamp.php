@@ -21,11 +21,17 @@ use Throwable;
 final class ErrorDetailsStamp implements StampInterface
 {
     private string $exceptionClass;
-    private int|string $exceptionCode;
+    /**
+     * @var int|string
+     */
+    private $exceptionCode;
     private string $exceptionMessage;
     private ?FlattenException $flattenException;
 
-    public function __construct(string $exceptionClass, int|string $exceptionCode, string $exceptionMessage, FlattenException $flattenException = null)
+    /**
+     * @param int|string $exceptionCode
+     */
+    public function __construct(string $exceptionClass, $exceptionCode, string $exceptionMessage, FlattenException $flattenException = null)
     {
         $this->exceptionClass = $exceptionClass;
         $this->exceptionCode = $exceptionCode;
@@ -52,7 +58,10 @@ final class ErrorDetailsStamp implements StampInterface
         return $this->exceptionClass;
     }
 
-    public function getExceptionCode(): int|string
+    /**
+     * @return int|string
+     */
+    public function getExceptionCode()
     {
         return $this->exceptionCode;
     }

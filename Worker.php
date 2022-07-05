@@ -78,7 +78,7 @@ class Worker
 
         $this->metadata->set(['queueNames' => $queueNames]);
 
-        $this->eventDispatcher?->dispatch(new WorkerStartedEvent($this));
+        ($eventDispatcher = $this->eventDispatcher) ? $eventDispatcher->dispatch(new WorkerStartedEvent($this)) : null;
 
         if ($queueNames) {
             // if queue names are specified, all receivers must implement the QueueReceiverInterface
@@ -103,7 +103,7 @@ class Worker
                     $envelopeHandled = true;
 
                     $this->handleMessage($envelope, $transportName);
-                    $this->eventDispatcher?->dispatch(new WorkerRunningEvent($this, false));
+                    ($eventDispatcher = $this->eventDispatcher) ? $eventDispatcher->dispatch(new WorkerRunningEvent($this, false)) : null;
 
                     if ($this->shouldStop) {
                         break 2;
@@ -123,7 +123,7 @@ class Worker
             }
 
             if (!$envelopeHandled) {
-                $this->eventDispatcher?->dispatch(new WorkerRunningEvent($this, true));
+                ($eventDispatcher = $this->eventDispatcher) ? $eventDispatcher->dispatch(new WorkerRunningEvent($this, true)) : null;
 
                 if (0 < $sleep = (int) ($options['sleep'] - 1e6 * (microtime(true) - $envelopeHandledStart))) {
                     usleep($sleep);
@@ -132,13 +132,13 @@ class Worker
         }
 
         $this->flush(true);
-        $this->eventDispatcher?->dispatch(new WorkerStoppedEvent($this));
+        ($eventDispatcher = $this->eventDispatcher) ? $eventDispatcher->dispatch(new WorkerStoppedEvent($this)) : null;
     }
 
     private function handleMessage(Envelope $envelope, string $transportName): void
     {
         $event = new WorkerMessageReceivedEvent($envelope, $transportName);
-        $this->eventDispatcher?->dispatch($event);
+        ($eventDispatcher = $this->eventDispatcher) ? $eventDispatcher->dispatch($event) : null;
         $envelope = $event->getEnvelope();
 
         if (!$event->shouldHandle()) {
@@ -189,7 +189,7 @@ class Worker
 
                 $failedEvent = new WorkerMessageFailedEvent($envelope, $transportName, $e);
 
-                $this->eventDispatcher?->dispatch($failedEvent);
+                ($eventDispatcher = $this->eventDispatcher) ? $eventDispatcher->dispatch($failedEvent) : null;
                 $envelope = $failedEvent->getEnvelope();
 
                 if (!$rejectFirst) {
@@ -200,7 +200,7 @@ class Worker
             }
 
             $handledEvent = new WorkerMessageHandledEvent($envelope, $transportName);
-            $this->eventDispatcher?->dispatch($handledEvent);
+            ($eventDispatcher = $this->eventDispatcher) ? $eventDispatcher->dispatch($handledEvent) : null;
             $envelope = $handledEvent->getEnvelope();
 
             if (null !== $this->logger) {
@@ -243,7 +243,7 @@ class Worker
 
     public function stop(): void
     {
-        $this->logger?->info('Stopping worker.', ['transport_names' => $this->metadata->getTransportNames()]);
+        ($logger = $this->logger) ? $logger->info('Stopping worker.', ['transport_names' => $this->metadata->getTransportNames()]) : null;
 
         $this->shouldStop = true;
     }

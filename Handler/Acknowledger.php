@@ -21,7 +21,10 @@ class Acknowledger
     private string $handlerClass;
     private ?\Closure $ack;
     private ?\Throwable $error = null;
-    private mixed $result = null;
+    /**
+     * @var mixed
+     */
+    private $result = null;
 
     /**
      * @param null|\Closure(\Throwable|null, mixed):void $ack
@@ -50,7 +53,10 @@ class Acknowledger
         return $this->error;
     }
 
-    public function getResult(): mixed
+    /**
+     * @return mixed
+     */
+    public function getResult()
     {
         return $this->result;
     }
@@ -67,7 +73,10 @@ class Acknowledger
         }
     }
 
-    private function doAck(\Throwable $e = null, mixed $result = null): void
+    /**
+     * @param mixed $result
+     */
+    private function doAck(\Throwable $e = null, $result = null): void
     {
         if (!$ack = $this->ack) {
             throw new LogicException(sprintf('The acknowledger cannot be called twice by the "%s" batch handler.', $this->handlerClass));

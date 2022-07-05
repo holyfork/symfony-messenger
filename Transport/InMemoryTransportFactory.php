@@ -33,7 +33,7 @@ class InMemoryTransportFactory implements TransportFactoryInterface, ResetInterf
 
     public function supports(string $dsn, array $options): bool
     {
-        return str_starts_with($dsn, 'in-memory://');
+        return strncmp($dsn, 'in-memory://', strlen('in-memory://')) === 0;
     }
 
     public function reset()

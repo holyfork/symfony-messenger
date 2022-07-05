@@ -86,7 +86,7 @@ class TraceableMessageBus implements MessageBusInterface
                 $line = $trace[$i]['line'];
 
                 while (++$i < 8) {
-                    if (isset($trace[$i]['function'], $trace[$i]['file']) && empty($trace[$i]['class']) && !str_starts_with($trace[$i]['function'], 'call_user_func')) {
+                    if (isset($trace[$i]['function'], $trace[$i]['file']) && empty($trace[$i]['class']) && strncmp($trace[$i]['function'], 'call_user_func', strlen('call_user_func')) !== 0) {
                         $file = $trace[$i]['file'];
                         $line = $trace[$i]['line'];
 

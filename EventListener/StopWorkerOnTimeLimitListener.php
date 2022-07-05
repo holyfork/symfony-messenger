@@ -42,7 +42,7 @@ class StopWorkerOnTimeLimitListener implements EventSubscriberInterface
     {
         if ($this->endTime < microtime(true)) {
             $event->getWorker()->stop();
-            $this->logger?->info('Worker stopped due to time limit of {timeLimit}s exceeded', ['timeLimit' => $this->timeLimitInSeconds]);
+            ($logger = $this->logger) ? $logger->info('Worker stopped due to time limit of {timeLimit}s exceeded', ['timeLimit' => $this->timeLimitInSeconds]) : null;
         }
     }
 

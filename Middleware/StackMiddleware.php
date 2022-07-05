@@ -22,9 +22,9 @@ class StackMiddleware implements MiddlewareInterface, StackInterface
     private int $offset = 0;
 
     /**
-     * @param iterable<mixed, MiddlewareInterface>|MiddlewareInterface|null $middlewareIterator
+     * @param mixed[]|\Symfony\Component\Messenger\Middleware\MiddlewareInterface $middlewareIterator
      */
-    public function __construct(iterable|MiddlewareInterface $middlewareIterator = null)
+    public function __construct($middlewareIterator = null)
     {
         $this->stack = new MiddlewareStack();
 

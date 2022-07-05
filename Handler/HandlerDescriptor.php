@@ -25,14 +25,14 @@ final class HandlerDescriptor
 
     public function __construct(callable $handler, array $options = [])
     {
-        $handler = $handler(...);
+        $handler = \Closure::fromCallable($handler);
 
         $this->handler = $handler;
         $this->options = $options;
 
         $r = new \ReflectionFunction($handler);
 
-        if (str_contains($r->name, '{closure}')) {
+        if (strpos($r->name, '{closure}') !== false) {
             $this->name = 'Closure';
         } elseif (!$handler = $r->getClosureThis()) {
             $class = $r->getClosureScopeClass();

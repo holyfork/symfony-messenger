@@ -120,7 +120,7 @@ class Serializer implements SerializerInterface
     {
         $stamps = [];
         foreach ($encodedEnvelope['headers'] as $name => $value) {
-            if (!str_starts_with($name, self::STAMP_HEADER_PREFIX)) {
+            if (strncmp($name, self::STAMP_HEADER_PREFIX, strlen(self::STAMP_HEADER_PREFIX)) !== 0) {
                 continue;
             }
 
@@ -174,13 +174,18 @@ class Serializer implements SerializerInterface
 
     private function getMimeTypeForFormat(): ?string
     {
-        return match ($this->format) {
-            'json' => 'application/json',
-            'xml' => 'application/xml',
-            'yml',
-            'yaml' => 'application/x-yaml',
-            'csv' => 'text/csv',
-            default => null,
-        };
+        switch ($this->format) {
+            case 'json':
+                return 'application/json';
+            case 'xml':
+                return 'application/xml';
+            case 'yml':
+            case 'yaml':
+                return 'application/x-yaml';
+            case 'csv':
+                return 'text/csv';
+            default:
+                return null;
+        }
     }
 }

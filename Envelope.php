@@ -53,8 +53,9 @@ final class Envelope
 
     /**
      * Adds one or more stamps.
+     * @return $this
      */
-    public function with(StampInterface ...$stamps): static
+    public function with(StampInterface ...$stamps)
     {
         $cloned = clone $this;
 
@@ -67,8 +68,9 @@ final class Envelope
 
     /**
      * Removes all stamps of the given class.
+     * @return $this
      */
-    public function withoutAll(string $stampFqcn): static
+    public function withoutAll(string $stampFqcn)
     {
         $cloned = clone $this;
 

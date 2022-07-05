@@ -131,7 +131,10 @@ class InMemoryTransport implements TransportInterface, ResetInterface
         return $this->decode($this->sent);
     }
 
-    private function encode(Envelope $envelope): Envelope|array
+    /**
+     * @return \Symfony\Component\Messenger\Envelope|mixed[]
+     */
+    private function encode(Envelope $envelope)
     {
         if (null === $this->serializer) {
             return $envelope;
@@ -151,6 +154,6 @@ class InMemoryTransport implements TransportInterface, ResetInterface
             return $messagesEncoded;
         }
 
-        return array_map($this->serializer->decode(...), $messagesEncoded);
+        return array_map(\Closure::fromCallable([$this->serializer, 'decode']), $messagesEncoded);
     }
 }

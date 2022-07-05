@@ -28,8 +28,9 @@ final class FlattenExceptionNormalizer implements DenormalizerInterface, Context
 
     /**
      * {@inheritdoc}
+     * @param mixed $object
      */
-    public function normalize(mixed $object, string $format = null, array $context = []): array
+    public function normalize($object, string $format = null, array $context = []): array
     {
         $normalized = [
             'message' => $object->getMessage(),
@@ -50,16 +51,18 @@ final class FlattenExceptionNormalizer implements DenormalizerInterface, Context
 
     /**
      * {@inheritdoc}
+     * @param mixed $data
      */
-    public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return $data instanceof FlattenException && ($context[Serializer::MESSENGER_SERIALIZATION_CONTEXT] ?? false);
     }
 
     /**
      * {@inheritdoc}
+     * @param mixed $data
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): FlattenException
+    public function denormalize($data, string $type, string $format = null, array $context = []): FlattenException
     {
         $object = new FlattenException();
 
@@ -77,9 +80,11 @@ final class FlattenExceptionNormalizer implements DenormalizerInterface, Context
         }
 
         $property = new \ReflectionProperty(FlattenException::class, 'trace');
+        $property->setAccessible(true);
         $property->setValue($object, (array) $data['trace']);
 
         $property = new \ReflectionProperty(FlattenException::class, 'traceAsString');
+        $property->setAccessible(true);
         $property->setValue($object, $data['trace_as_string']);
 
         return $object;
@@ -87,8 +92,9 @@ final class FlattenExceptionNormalizer implements DenormalizerInterface, Context
 
     /**
      * {@inheritdoc}
+     * @param mixed $data
      */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = []): bool
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return FlattenException::class === $type && ($context[Serializer::MESSENGER_SERIALIZATION_CONTEXT] ?? false);
     }

@@ -35,6 +35,7 @@ interface ListableReceiverInterface extends ReceiverInterface
      * Returns the Envelope by id or none.
      *
      * Message should be given the same stamps as when using ReceiverInterface::get().
+     * @param mixed $id
      */
-    public function find(mixed $id): ?Envelope;
+    public function find($id): ?Envelope;
 }

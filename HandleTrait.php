@@ -30,8 +30,9 @@ trait HandleTrait
      * the last one usually returning the handler result.
      *
      * @param object|Envelope $message The message or the message pre-wrapped in an envelope
+     * @return mixed
      */
-    private function handle(object $message): mixed
+    private function handle(object $message)
     {
         if (!isset($this->messageBus)) {
             throw new LogicException(sprintf('You must provide a "%s" instance in the "%s::$messageBus" property, but that property has not been initialized yet.', MessageBusInterface::class, static::class));

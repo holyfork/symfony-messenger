@@ -29,7 +29,7 @@ class PhpSerializer implements SerializerInterface
             throw new MessageDecodingFailedException('Encoded envelope should have at least a "body", or maybe you should implement your own serializer.');
         }
 
-        if (!str_ends_with($encodedEnvelope['body'], '}')) {
+        if (substr_compare($encodedEnvelope['body'], '}', -strlen('}')) !== 0) {
             $encodedEnvelope['body'] = base64_decode($encodedEnvelope['body']);
         }
 

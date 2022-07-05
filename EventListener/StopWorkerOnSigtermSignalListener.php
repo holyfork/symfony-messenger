@@ -30,7 +30,7 @@ class StopWorkerOnSigtermSignalListener implements EventSubscriberInterface
     public function onWorkerStarted(WorkerStartedEvent $event): void
     {
         pcntl_signal(\SIGTERM, function () use ($event) {
-            $this->logger?->info('Received SIGTERM signal.', ['transport_names' => $event->getWorker()->getMetadata()->getTransportNames()]);
+            ($logger = $this->logger) ? $logger->info('Received SIGTERM signal.', ['transport_names' => $event->getWorker()->getMetadata()->getTransportNames()]) : null;
 
             $event->getWorker()->stop();
         });

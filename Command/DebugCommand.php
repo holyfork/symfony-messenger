@@ -133,7 +133,7 @@ EOF
 
                 return trim(preg_replace('#\s*\n\s*\*\s*#', ' ', $docComment));
             }
-        } catch (\ReflectionException) {
+        } catch (\ReflectionException $exception) {
         }
 
         return '';
